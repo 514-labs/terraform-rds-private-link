@@ -1,5 +1,5 @@
 module "fiveonefour_private_link" {
-  source  = "git::git@github.com:514-labs/terraform-rds-private-link.git?ref=0.0.1"
+  source  = "git::git@github.com:514-labs/terraform-rds-private-link.git?ref=0.0.2"
 
   ### Name of the NLB
   ### this name is used to name most other resources

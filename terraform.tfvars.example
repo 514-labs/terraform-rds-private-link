@@ -1,0 +1,12 @@
+# The name of the existing RDS instances
+rds_instance_details = [
+  { name = "instance1", port = 5001 },
+  { name = "instance2", port = 5002 }
+]
+
+# The VPC ID of the existing RDS instance
+rds_vpc_id =
+
+# For cross-region access, add the regions to the list where you want to connect to your RDS cluster from.
+# Empty list means only same-region access is allowed.
+supported_regions = []

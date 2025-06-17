@@ -1,5 +1,5 @@
 module "fiveonefour_private_link" {
-  source  = "git::git@github.com:514-labs/terraform-rds-private-link.git?ref=0.0.2"
+  source  = "git::git@github.com:514-labs/terraform-rds-private-link.git?ref=0.0.3"
 
   ### Name of the NLB
   ### this name is used to name most other resources
@@ -10,8 +10,8 @@ module "fiveonefour_private_link" {
 
   ### RDS cluster details that will be used to create the PrivateLink endpoint
   rds_cluster_details = {
-      name = "jw-aurora-postgres"
-      port = 5432
+    name = "jw-aurora-postgres"
+    port = 5432
   }
 
   acceptance_required = true
@@ -20,6 +20,7 @@ module "fiveonefour_private_link" {
   ### Supported regions for the PrivateLink endpoint. must include us-east-2 for connection to Boreal
   supported_regions   = ["us-east-2"]
 
+  ### applied to all resources that accept tags
   default_tags = {
     Purpose = "514-private-link"
   }

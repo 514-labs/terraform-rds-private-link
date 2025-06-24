@@ -47,9 +47,7 @@ data "aws_iam_policy_document" "lambda_execution_policy" {
     actions = [
       "rds:DescribeDBInstances"
     ]
-    resources = [
-      "arn:aws:rds:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:db:${var.rds_cluster_details.name}-*"
-    ]
+    resources = ["*"]
   }
 
   # Load balancer describe permissions - these operations require broader access

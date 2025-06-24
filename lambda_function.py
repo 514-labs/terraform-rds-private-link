@@ -17,7 +17,7 @@ CLUSTER_PORT = int(os.environ['CLUSTER_PORT'])
 TARGET_GROUP_ARN = os.environ['TARGET_GROUP_ARN']
 
 def get_cluster_instance_ips():
-    """Get all IP addresses for instances in the cluster"""
+    """Get IP addresses for writer instances in the cluster"""
     try:
         # Get cluster details
         cluster_response = rds_client.describe_db_clusters(DBClusterIdentifier=CLUSTER_NAME)
@@ -29,8 +29,13 @@ def get_cluster_instance_ips():
 
         instance_ips = []
 
-        # Get IP for each cluster member
+        # Get IP for each writer instance in the cluster
         for member in cluster_members:
+            # Only process writer instances
+            if not member.get('IsClusterWriter', False):
+                logger.info(f"Skipping reader instance {member['DBInstanceIdentifier']}")
+                continue
+
             instance_id = member['DBInstanceIdentifier']
             try:
                 instance_response = rds_client.describe_db_instances(DBInstanceIdentifier=instance_id)
@@ -38,13 +43,13 @@ def get_cluster_instance_ips():
                 endpoint = instance['Endpoint']['Address']
                 ip_address = socket.gethostbyname(endpoint)
                 instance_ips.append(ip_address)
-                logger.info(f"Found IP {ip_address} for instance {instance_id}")
+                logger.info(f"Found IP {ip_address} for writer instance {instance_id}")
             except Exception as e:
-                logger.error(f"Error getting IP for instance {instance_id}: {e}")
+                logger.error(f"Error getting IP for writer instance {instance_id}: {e}")
 
         return instance_ips
     except Exception as e:
-        logger.error(f"Error getting cluster instance IPs: {e}")
+        logger.error(f"Error getting cluster writer instance IPs: {e}")
         raise
 
 def update_target_group():
